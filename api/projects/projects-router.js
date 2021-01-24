@@ -17,7 +17,7 @@ router.get(`/:id`, async (req, res) => {
   const { id } = req.params;
   const project = await Projects.get(id);
   if (!project) {
-    res.status(400).json({ message: "Could not find a project with that ID" });
+    res.status(404).json({ message: "Could not find a project with that ID" });
   } else {
     try {
       res.status(200).json(project);
@@ -60,7 +60,7 @@ router.put(`/:id`, async (req, res) => {
       } else {
         res
           .status(404)
-          .json({ message: "coild not find a project with that ID" });
+          .json({ message: "could not find a project with that ID" });
       }
     } catch (err) {
       res
