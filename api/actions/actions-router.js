@@ -6,7 +6,6 @@ const router = express.Router();
 const Actions = require("./actions-model");
 
 router.get(`/`, async (req, res) => {
-  //   const { id } = req.params;
   try {
     const actions = await Actions.get();
     res.status(200).json(actions);
@@ -25,6 +24,25 @@ router.get(`/:id`, async (req, res) => {
       res.status(200).json(action);
     } catch (err) {
       res.status(500).json({ message: "there was a problem with the server" });
+    }
+  }
+});
+
+router.post(`/`, async (req, res) => {
+  const newAction = req.body;
+  if (!newAction.project_id || !newAction.description || !newAction.notes) {
+    res.status(404).json({
+      message:
+        "You must include a project ID, a description and your notes to add a new action",
+    });
+  } else {
+    try {
+      const insertedAction = await Actions.insert(newAction);
+      res.status(202).json(insertedAction);
+    } catch (err) {
+      res.status(500).json({
+        message: "There has been an error posting that action",
+
     }
   }
 });
