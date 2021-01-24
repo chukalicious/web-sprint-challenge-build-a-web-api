@@ -42,7 +42,7 @@ router.post(`/`, async (req, res) => {
     } catch (err) {
       res.status(500).json({
         message: "There has been an error posting that action",
-
+      });
     }
   }
 });
