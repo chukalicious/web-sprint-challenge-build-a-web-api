@@ -51,13 +51,13 @@ router.put(`/:id`, async (req, res) => {
   const { id } = req.params;
   const change = req.body;
   if (!change.project_id || !change.description || !change.notes) {
-    res.status(404).json({
+    res.status(400).json({
       message:
         "you must include a project ID, a description and notes to edit this action",
     });
   } else {
     try {
-      const updatedAction = await Actions.update(id, changes);
+      const updatedAction = await Actions.update(id, change);
       if (updatedAction) {
         res.status(201).json(updatedAction);
       } else {
