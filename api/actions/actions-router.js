@@ -47,4 +47,26 @@ router.post(`/`, async (req, res) => {
   }
 });
 
+router.put(`/:id`, async (req, res) => {
+  const { id } = req.params;
+  const change = req.body;
+  if (!change.project_id || !change.description || !change.notes) {
+    res.status(404).json({
+      message:
+        "you must include a project ID, a description and notes to edit this action",
+    });
+  } else {
+    try {
+      const updatedAction = await Actions.update(id, changes);
+      if (updatedAction) {
+        res.status(201).json(updatedAction);
+      } else {
+        res.status(404).json({ message: "Could not find action by that ID" });
+      }
+    } catch (err) {
+      res.status(500).json({ message: "Could not update that action" });
+    }
+  }
+});
+
 module.exports = router;
