@@ -44,4 +44,30 @@ router.post(`/`, async (req, res) => {
   }
 });
 
+router.put(`/:id`, async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  if (!changes.name || !changes.description) {
+    res.json(400).json({
+      message: "updated project should include a name and description",
+    });
+  } else {
+    try {
+      const updatedProject = await Projects.update(id, changes);
+      if (updatedProject) {
+        res.status(201).json(updatedProject);
+      } else {
+        res
+          .status(404)
+          .json({ message: "coild not find a project with that ID" });
+      }
+    } catch (err) {
+      res
+        .status(500)
+        .json({ nessage: "could not update project at this time" });
+    }
+  }
+});
+
 module.exports = router;
