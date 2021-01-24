@@ -31,7 +31,7 @@ router.get(`/:id`, async (req, res) => {
 router.post(`/`, async (req, res) => {
   const newAction = req.body;
   if (!newAction.project_id || !newAction.description || !newAction.notes) {
-    res.status(404).json({
+    res.status(400).json({
       message:
         "You must include a project ID, a description and your notes to add a new action",
     });
@@ -66,6 +66,22 @@ router.put(`/:id`, async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: "Could not update that action" });
     }
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const action = await Actions.remove(id);
+    if (!action) {
+      res.status(400).json({ message: "Could not locate action with that ID" });
+    } else {
+      res.status(204).json({ message: "action deleted" });
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "there was an error deleting that action" });
   }
 });
 
