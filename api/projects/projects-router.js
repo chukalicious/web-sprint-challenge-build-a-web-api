@@ -88,4 +88,19 @@ router.delete(`/:id`, async (req, res) => {
   }
 });
 
+router.get(`/:id/actions`, async (req, res) => {
+  const { id } = req.params;
+  const projectActions = await Projects.getProjectActions(id);
+
+  if (!projectActions) {
+    res.status(400).json({ message: "could not find that project" });
+  } else {
+    try {
+      res.status(200).json(projectActions);
+    } catch (err) {
+      res.status(500).json({ message: "server error" });
+    }
+  }
+});
+
 module.exports = router;
