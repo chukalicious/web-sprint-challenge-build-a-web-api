@@ -49,7 +49,7 @@ router.put(`/:id`, async (req, res) => {
   const changes = req.body;
 
   if (!changes.name || !changes.description) {
-    res.json(400).json({
+    res.status(400).json({
       message: "updated project should include a name and description",
     });
   } else {
